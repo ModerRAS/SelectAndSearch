@@ -23,24 +23,27 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            FindedText = new RichTextBox();
+            blazorWebView1 = new Microsoft.AspNetCore.Components.WebView.WindowsForms.BlazorWebView();
             SuspendLayout();
             // 
-            // FindedText
+            // blazorWebView1
             // 
-            FindedText.Location = new Point(-1, 0);
-            FindedText.Name = "FindedText";
-            FindedText.Size = new Size(802, 452);
-            FindedText.TabIndex = 0;
-            FindedText.Text = "";
+            blazorWebView1.Anchor = AnchorStyles.None;
+            blazorWebView1.Location = new Point(0, 0);
+            blazorWebView1.Name = "blazorWebView1";
+            blazorWebView1.Size = new Size(500, 250);
+            blazorWebView1.TabIndex = 0;
+            blazorWebView1.Text = "blazorWebView1";
             // 
             // PopupForm
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
+            AutoScrollMinSize = new Size(500, 250);
             AutoValidate = AutoValidate.EnablePreventFocusChange;
-            ClientSize = new Size(800, 450);
-            Controls.Add(FindedText);
+            ClientSize = new Size(500, 250);
+            Controls.Add(blazorWebView1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "PopupForm";
             Text = "PopupForm";
@@ -49,6 +52,6 @@
 
         #endregion
 
-        public RichTextBox FindedText;
+        private Microsoft.AspNetCore.Components.WebView.WindowsForms.BlazorWebView blazorWebView1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using SelectAndSearch.Hooks;
+﻿using Ninject;
+using SelectAndSearch.Hooks;
 using SelectAndSearch.Managers;
 using SelectAndSearch.Services;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SelectAndSearch {
     internal class NinjaBindings : Ninject.Modules.NinjectModule {
+        public static StandardKernel ninja { get; set; } = new StandardKernel(new NinjaBindings());
         public override void Load() {
             Bind<LuceneManager>().To<LuceneManager>();
             Bind<SearchService>().To<SearchService>();
@@ -16,6 +18,7 @@ namespace SelectAndSearch {
             Bind<PopupForm>().To<PopupForm>();
             Bind<HighlightManager>().To<HighlightManager>();
             Bind<ClipboardHook>().To<ClipboardHook>();
+            Bind<Popup>().To<Popup>();
         }
     }
 }

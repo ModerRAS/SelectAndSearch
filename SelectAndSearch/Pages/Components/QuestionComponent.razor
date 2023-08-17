@@ -1,0 +1,32 @@
+﻿@using SelectAndSearch.Models;
+@using Masa.Blazor.Presets
+@using AlertTypes = BlazorComponent.AlertTypes
+
+<div>
+    <PBlockText Primary="@Question.CorrectAnswer"
+                Secondary="@Question.Title">
+    </PBlockText>
+    @foreach (var (value, i) in Question.Answers.Select((value, i) => (value, i))) {
+        Console.WriteLine(i);
+        var tmp = Question.CorrectAnswerNumber.Contains(i);
+        if (tmp) {
+            <MAlert Dense
+            Color="green"
+            Type="AlertTypes.Success">
+            @value
+            </MAlert>
+        } else {
+            <MAlert Dense Outlined
+            Color="red"
+            Type="AlertTypes.Error">
+            @value
+            </MAlert>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+}
