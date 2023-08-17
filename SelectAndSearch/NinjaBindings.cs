@@ -14,6 +14,8 @@ namespace SelectAndSearch {
             Bind<SearchService>().To<SearchService>();
             Bind<MainForm>().To<MainForm>();
             Bind<PopupForm>().To<PopupForm>();
+            Bind<HighlightManager>().To<HighlightManager>();
+            Bind<ClipboardHook>().To<ClipboardHook>();
         }
     }
 }
