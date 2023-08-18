@@ -1,9 +1,6 @@
 ﻿using SelectAndSearch.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SelectAndSearch.Models;
+using SearchOption = SelectAndSearch.Models.SearchOption;
 
 namespace SelectAndSearch.Services {
     public class SearchService {
@@ -11,9 +8,11 @@ namespace SelectAndSearch.Services {
         public SearchService(LuceneManager luceneManager) { 
             this.luceneManager = luceneManager;
         }
-        public string Execute(string SearchText) {
-            var (length, result) = luceneManager.Search(SearchText, 0, 20);
-            return "";
+        public SearchOption Execute(SearchOption option) {
+            var (length, result) = luceneManager.Search(option.SearchText, option.Skip, option.Take);
+            option.Count = length;
+            option.Questions = result;
+            return option;
         }
     }
 }
