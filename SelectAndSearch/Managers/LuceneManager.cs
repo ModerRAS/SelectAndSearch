@@ -129,7 +129,6 @@ namespace SelectAndSearch.Managers {
                 var document = searcher.Doc(hit.Doc);
                 question.Add(new Question() {
                     Title = document.Get("Title"),
-                    Type = (QuestionType)int.Parse(document.Get("QuestionType")),
                     Answers = JsonConvert.DeserializeObject<List<string>>(document.Get("Answers")),
                     CorrectAnswer = document.Get("CorrectAnswer"),
                     Remark = document.Get("Remark")
