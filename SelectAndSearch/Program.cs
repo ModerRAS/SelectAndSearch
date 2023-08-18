@@ -13,9 +13,12 @@ namespace SelectAndSearch {
         /// </summary>
         [STAThread]
         static void Main() {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureServices(service => {
+                    service.AddSingleton<ExcelManager>();
                     service.AddSingleton<LuceneManager>();
+                    service.AddTransient<ImportService>();
                     service.AddTransient<SearchService>();
                     service.AddSingleton<MainForm>();
                     service.AddSingleton<PopupForm>();

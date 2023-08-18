@@ -1,9 +1,27 @@
 @page "/"
+@using SelectAndSearch.Services;
+@inject ImportService importService
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>@filenames</h1>
 
-Welcome to your new app.
+<MButton Elevation="2" Color="primary" OnClick="@SelectFiles">导入题库</MButton>
 
 <SurveyPrompt Title="This is fire-new Blazor UI!" />
+
+@code {
+    public string filenames { get; set; } = string.Empty;
+    public async Task SelectFiles() {
+        OpenFileDialog dialog = new OpenFileDialog();
+        dialog.Multiselect = true;
+        dialog.Title = "请选择文件夹";
+        dialog.Filter = "所有文件(*.*)|*.*";
+        if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+            //filenames = dialog.FileName;
+
+            await importService.Execute(dialog.FileNames.ToList());
+            filenames = string.Join(";", dialog.FileNames);
+        }
+    }
+}

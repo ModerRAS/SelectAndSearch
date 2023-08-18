@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>2276d0f3-0223-406a-a525-ef9183524508</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,6 +31,7 @@
 		<PackageReference Include="Sdcb.PaddleInference.runtime.win64.mkl" Version="2.5.1" />
 		<PackageReference Include="Sdcb.PaddleOCR" Version="2.7.0" />
 		<PackageReference Include="Sdcb.PaddleOCR.Models.Local" Version="2.7.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
