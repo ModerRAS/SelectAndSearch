@@ -30,14 +30,12 @@ namespace SelectAndSearch {
                         options.TimestampFormat = "[yyyy/MM/dd HH:mm:ss] ";
                     });
                 }).Build();
-            var ninja = NinjaBindings.ninja;
-            //ninja.Load(Assembly.GetExecutingAssembly());
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            //Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(host.Services.GetService<MainForm>());
         }
     }
