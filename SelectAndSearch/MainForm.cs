@@ -3,10 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SelectAndSearch {
     public partial class MainForm : Form {
-        public MainForm() {
+        public MainForm(IServiceCollection services) {
             InitializeComponent();
-
-            var services = new ServiceCollection();
+            
             services.AddWindowsFormsBlazorWebView();
             services.AddMasaBlazor();
 

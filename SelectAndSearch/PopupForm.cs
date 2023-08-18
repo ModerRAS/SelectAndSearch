@@ -21,10 +21,9 @@ namespace SelectAndSearch {
                 return cp;
             }
         }
-        public PopupForm() {
+        public PopupForm(IServiceCollection services) {
             InitializeComponent();
             //AutoScaleMode = AutoScaleMode.Dpi;
-            var services = new ServiceCollection();
             services.AddWindowsFormsBlazorWebView();
             services.AddMasaBlazor();
 
