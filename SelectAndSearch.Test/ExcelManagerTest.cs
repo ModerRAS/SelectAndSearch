@@ -11,11 +11,11 @@ namespace SelectAndSearch.Test {
             var manager = new ExcelManager();
             var questions = manager.ParseDocument("TestData/ExcelManager/test1.xlsx");
             Assert.AreEqual(1, questions.Count);
-            Assert.AreEqual("这是题干", questions[0].Title);
+            Assert.AreEqual("杩欐槸棰樺共", questions[0].Title);
             Assert.AreEqual("A", questions[0].CorrectAnswer);
-            Assert.AreEqual("选项A", questions[0].Answers[0]);
-            Assert.AreEqual("选项B", questions[0].Answers[1]);
-            Assert.AreEqual("选项C", questions[0].Answers[2]);
+            Assert.AreEqual("閫夐」A", questions[0].Answers[0]);
+            Assert.AreEqual("閫夐」B", questions[0].Answers[1]);
+            Assert.AreEqual("閫夐」C", questions[0].Answers[2]);
             Assert.AreEqual(3, questions[0].Answers.Count);
         }
     }
