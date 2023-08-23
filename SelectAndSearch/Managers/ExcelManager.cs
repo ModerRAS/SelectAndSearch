@@ -13,13 +13,18 @@ namespace SelectAndSearch.Managers {
         public ExcelManager() { }
         public Question ParsePerLine(IExcelDataReader reader) {
             var question = new Question() {
-                Title = reader.GetString(1),
-                CorrectAnswer = reader.GetString(2),
+                Title = reader.GetString(0),
+                CorrectAnswer = reader.GetString(1),
             };
-            for (int i = 3; !string.IsNullOrWhiteSpace(reader.GetString(i)); i++) {
-                var answer = reader.GetString(i);
-                question.Answers.Add(answer);
+            try {
+                for (int i = 2; !string.IsNullOrWhiteSpace(reader.GetString(i)); i++) {
+                    var answer = reader.GetString(i);
+                    question.Answers.Add(answer);
+                }
+            } catch(IndexOutOfRangeException e) {
+                Console.WriteLine(e);
             }
+            
             return question;
         }
         public List<Question> ParseDocument(string path) {
