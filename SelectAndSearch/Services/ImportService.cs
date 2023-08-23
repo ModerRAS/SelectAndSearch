@@ -15,11 +15,11 @@ namespace SelectAndSearch.Services {
             LuceneManager = luceneManager;
         }
         public async Task Execute(List<string> paths) {
-            var questions = new List<Question>();
-            foreach (var path in paths) {
-                questions.AddRange(ExcelManager.ParseDocument(path));
-            }
             await Task.Run(() => {
+                var questions = new List<Question>();
+                foreach (var path in paths) {
+                    questions.AddRange(ExcelManager.ParseDocument(path));
+                }
                 LuceneManager.WriteDocuments(questions);
             });
         }

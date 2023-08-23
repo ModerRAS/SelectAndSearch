@@ -32,6 +32,7 @@ namespace SelectAndSearch {
             blazorWebView1.HostPage = "wwwroot/index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<Popup>("#app");
+            blazorWebView1.AutoScroll = false;
         }
     }
 }

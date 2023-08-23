@@ -1,12 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Ninject;
+using SelectAndSearch.Hooks;
 using SelectAndSearch.Managers;
 using SelectAndSearch.Services;
 
 namespace SelectAndSearch {
     internal static class Program {
+        public static IHost host { get; private set; }
         
         /// <summary>
         ///  The main entry point for the application.
@@ -14,15 +15,16 @@ namespace SelectAndSearch {
         [STAThread]
         static void Main() {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            IHost host = Host.CreateDefaultBuilder()
+            host = Host.CreateDefaultBuilder()
                 .ConfigureServices(service => {
                     service.AddSingleton<ExcelManager>();
                     service.AddSingleton<LuceneManager>();
                     service.AddTransient<ImportService>();
                     service.AddTransient<SearchService>();
                     service.AddSingleton<MainForm>();
-                    service.AddSingleton<PopupForm>();
-                    service.AddSingleton<Popup>();
+                    service.AddTransient<PopupForm>();
+                    //service.AddSingleton<Popup>();
+                    service.AddTransient<ClipboardHook>();
                     service.AddSingleton(service);
                 })
                 .ConfigureLogging(logging => {
