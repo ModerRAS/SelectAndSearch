@@ -40,7 +40,6 @@ namespace SelectAndSearch.Hooks
         /// 声明键盘钩子事件类型
         /// </summary>
         HookProc KeyboardHookProcedure;
-        HookProc MouseHookProcedure;
 
         /// <summary>
         /// 键盘钩子句柄
@@ -151,16 +150,6 @@ namespace SelectAndSearch.Hooks
                 hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardHookProcedure, GetModuleHandle(curModule.ModuleName), 0);
             }
 
-            // install Mouse hook 
-            if (hMouseHook == 0) {
-                //实例化委托
-                MouseHookProcedure = new HookProc(MouseHookProc);
-                Process curProcess = Process.GetCurrentProcess();
-                ProcessModule curModule = curProcess.MainModule;
-                hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseHookProcedure, GetModuleHandle(curModule.ModuleName), 0);
-
-
-            }
 
         }
 
@@ -238,64 +227,6 @@ namespace SelectAndSearch.Hooks
             //return 0;
         }
 
-
-
-        #region Win32变量
-
-        private const int WM_MOUSEMOVE = 0x200;
-
-        private const int WM_LBUTTONDOWN = 0x201;
-
-        private const int WM_RBUTTONDOWN = 0x204;
-
-        private const int WM_MBUTTONDOWN = 0x207;
-
-        private const int WM_LBUTTONUP = 0x202;
-
-        private const int WM_RBUTTONUP = 0x205;
-
-        private const int WM_MBUTTONUP = 0x208;
-
-        private const int WM_LBUTTONDBLCLK = 0x203;
-
-        private const int WM_RBUTTONDBLCLK = 0x206;
-
-        private const int WM_MBUTTONDBLCLK = 0x209;
-        #endregion
-
-        /// <summary>
-        /// 截取鼠标按键
-        /// </summary>
-        /// <param name="nCode"></param>
-        /// <param name="wParam"></param>
-        /// <param name="lParam"></param>
-        /// <returns></returns>
-        private int MouseHookProc(int nCode, Int32 wParam, IntPtr lParam) {
-            if (nCode >= 0) {
-                //MouseButtons button = MouseButtons.None;
-                switch (wParam) {
-                    case WM_LBUTTONDOWN:    //左键按下
-                                            //case WM_LBUTTONUP:        //右键按下
-                                            //case WM_LBUTTONDBLCLK:    //同时按下
-                        Hide_Form();
-                        break;
-                    case WM_LBUTTONUP:      // 左键松开
-                        //模拟按下ctrl键
-                        //keybd_event(vbKeyControl, 0, 0, 0);
-                        ////模拟按下C键
-                        //keybd_event(vbKeyC, 0, 0, 0);
-
-                        ////模拟松开ctrl键
-                        //keybd_event(vbKeyControl, 0, 2, 0);
-                        ////模拟松开C键
-                        //keybd_event(vbKeyC, 0, 2, 0);
-
-                        break;
-                }
-
-            }
-            return CallNextHookEx(hMouseHook, nCode, wParam, lParam);
-        }
 
         public void Hide_Form() {
 
