@@ -1,5 +1,9 @@
-﻿@using SelectAndSearch.Models;
+﻿@using SelectAndSearch.Managers;
+@using SelectAndSearch.Models;
+@using SelectAndSearch.Services;
+@using SearchOption = SelectAndSearch.Models.SearchOption;
 @inherits LayoutComponentBase
+@inject SearchService searchService;
 
 <MApp>
 
@@ -7,27 +11,7 @@
     <MMain>
         <!-- 给应用提供合适的间距 -->
         <MContainer Fluid>
-            <MCard Width="500"
-                   Height="140"
-                   Class="overflow-auto"
-                   Style="margin: 0 0"
-                   @ref="_card">
-                <MList>
-                    @foreach (var item in _items) {
-                        <MListItem>
-                            <MListItemContent>
-                                <MListItemTitle>
-                                    <SelectAndSearch.Pages.Components.QuestionComponent Question="@item"></SelectAndSearch.Pages.Components.QuestionComponent>
-                                </MListItemTitle>
-                            </MListItemContent>
-                        </MListItem>
-                        <MDivider />
-                    }
-                </MList>
-                <MInfiniteScroll OnLoad="@OnLoad"
-                                 Parent="@_card.Ref">
-                </MInfiniteScroll>
-            </MCard>
+            <SelectAndSearch.Pages.Components.QuestionList Questions="_items"></SelectAndSearch.Pages.Components.QuestionList>
         </MContainer>
     </MMain>
 
@@ -39,146 +23,25 @@
 
 
 @code {
-    private Question item { get; set; } = new Question()
-        {
-            Title = "这是标题",
-            Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-            CorrectAnswer = "A",
-            Remark = "无",
-            
-        };
-    private MCard? _card;
-    private int _count;
-    private bool _mockError;
     private List<Question> _items = new();
-
-    private async Task OnLoad(InfiniteScrollLoadEventArgs args) {
-        var append = await MockRequest();
-
-        args.Status = append.Count == 0 ? InfiniteScrollLoadStatus.Empty : InfiniteScrollLoadStatus.Ok;
-
-        _items.AddRange(append);
+    private System.Timers.Timer timer = new(1000);
+    private SearchOption searchOption { get; set; }
+    protected override void OnInitialized() {
+        timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        timer.Start();
     }
-
-    private async Task<List<Question>> MockRequest() {
-        if (_count >= 3) {
-            return new List<Question>();
-        }
-
-        await Task.Delay(2000);
-
-        if (_count == 1 && !_mockError) {
-            _mockError = true;
-            throw new TimeoutException("Mock error");
-        }
-
-        _count++;
-
-        return new List<Question>() {
-            new Question() {
-                Title = "这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题这是很长的标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            },
-            new Question() {
-                Title = "这是标题",
-                Answers = new List<string>() {
-                    "选项1",
-                    "选项2",
-                    "选项3"
-                },
-                CorrectAnswer = "A",
-                Remark = "无",
-                
-            }
-        };
+    private void OnTimerCallback() {
+        _ = InvokeAsync(() => {
+            Update();
+            StateHasChanged();
+        });
     }
-
+    private void Update() {
+        if (searchOption is null || !searchOption.SearchText.Equals(SearchService.option.SearchText)) {
+            searchOption = searchService.Execute();
+            _items = searchOption.Questions;
+        }
+        
+    }
+    public void Dispose() => timer.Dispose();
 }
