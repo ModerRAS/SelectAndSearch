@@ -1,13 +1,16 @@
 @page "/"
+@using SelectAndSearch.Hooks;
 @using SelectAndSearch.Services;
 @inject ImportService importService
+@inject ClipboardHook clipboardHook;
 
 <PageTitle>Index</PageTitle>
 
 <h1>@filenames</h1>
 
 <MButton Elevation="2" Color="primary" OnClick="@SelectFiles">导入题库</MButton>
-
+<MButton Elevation="2" Color="primary" OnClick="@clipboardHook.Start_Hook">启动钩子</MButton>
+<MButton Elevation="2" Color="primary" OnClick="@clipboardHook.Stop_Hook">关闭钩子</MButton>
 <SurveyPrompt Title="This is fire-new Blazor UI!" />
 
 @code {
@@ -16,7 +19,7 @@
         OpenFileDialog dialog = new OpenFileDialog();
         dialog.Multiselect = true;
         dialog.Title = "请选择文件夹";
-        dialog.Filter = "所有文件(*.*)|*.*";
+        dialog.Filter = "Excel文件(*.xlsx)|*.xlsx";
         if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
             //filenames = dialog.FileName;
 
