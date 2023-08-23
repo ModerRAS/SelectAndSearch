@@ -64,9 +64,8 @@ namespace SelectAndSearch.Managers {
             }
         }
         public void WriteDocuments(IEnumerable<Question> questions) {
-            var list = new List<Question>();
             using (var writer = GetIndexWriter()) {
-                foreach (Question question in list) {
+                foreach (Question question in questions) {
                     try {
                         if (GenerateDocument(question, out var doc)) {
                             writer.AddDocument(doc);
