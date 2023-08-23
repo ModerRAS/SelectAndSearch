@@ -1,0 +1,25 @@
+﻿@using SelectAndSearch.Models;
+@inherits LayoutComponentBase
+
+<MList>
+    @foreach (var item in Questions) {
+        <MListItem>
+            <MListItemContent>
+                <MListItemTitle>
+                    <SelectAndSearch.Pages.Components.QuestionComponent Question="@item"></SelectAndSearch.Pages.Components.QuestionComponent>
+                </MListItemTitle>
+            </MListItemContent>
+        </MListItem>
+        <MDivider />
+    }
+</MList>
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public List<Question> Questions { get; set; }
+}
