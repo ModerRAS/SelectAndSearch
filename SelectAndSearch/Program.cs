@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SelectAndSearch.Common.Hooks;
+using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Managers;
 using SelectAndSearch.Common.Services;
 
@@ -22,7 +23,7 @@ namespace SelectAndSearch {
                     service.AddTransient<ImportService>();
                     service.AddTransient<SearchService>();
                     service.AddSingleton<MainForm>();
-                    service.AddTransient<PopupForm>();
+                    service.AddTransient<IPopupForm,PopupForm>();
                     //service.AddSingleton<Popup>();
                     service.AddTransient<ClipboardHook>();
                     service.AddSingleton(service);
