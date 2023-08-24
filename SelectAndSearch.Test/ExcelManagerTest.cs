@@ -1,4 +1,4 @@
-using SelectAndSearch.Managers;
+using SelectAndSearch.Common.Managers;
 
 namespace SelectAndSearch.Test {
     [TestClass]
