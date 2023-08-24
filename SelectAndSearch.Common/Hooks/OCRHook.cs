@@ -25,18 +25,23 @@ namespace SelectAndSearch.Common.Hooks {
         public SearchService SearchService { get; set; }
         public IPopupForm PopupForm { get; set; }
         public OCRHook() {
+        }
+        public OCRHook(SearchService searchService, IPopupForm popupForm) {
+            SearchService = searchService;
+            PopupForm = popupForm;
+            SearchOption = SearchService.option;
+            InitOCR();
+        }
+        public void InitOCR() {
             FullOcrModel model = LocalFullModels.ChineseV3;
             all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()) {
                 AllowRotateDetection = true, /* 允许识别有角度的文字 */
                 Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
             };
         }
-        public OCRHook(SearchService searchService, IPopupForm popupForm) {
-            SearchService = searchService;
-            PopupForm = popupForm;
-            SearchOption = SearchService.option;
+        public void InitOCROpenBlas() {
             FullOcrModel model = LocalFullModels.ChineseV3;
-            all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()) {
+            all = new PaddleOcrAll(model, PaddleDevice.Openblas()) {
                 AllowRotateDetection = true, /* 允许识别有角度的文字 */
                 Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
             };

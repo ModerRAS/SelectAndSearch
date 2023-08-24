@@ -10,9 +10,13 @@ using BenchmarkDotNet.Jobs;
 namespace SelectAndSearch.Benchmark {
     [RPlotExporter]
     public class OCRHookBenchmark {
-        public OCRHook ocr { get; set; }
+        public OCRHook ocrMkl { get; set; }
+        public OCRHook ocrOpenBlas { get; set; }
         public OCRHookBenchmark() {
-            ocr = new OCRHook();
+            ocrMkl = new OCRHook();
+            ocrOpenBlas = new OCRHook();
+            ocrMkl.InitOCR();
+            ocrOpenBlas.InitOCROpenBlas();
         }
         [Benchmark]
         public void BenchmarkGetScreenSize() {
@@ -27,12 +31,23 @@ namespace SelectAndSearch.Benchmark {
             var tmp = OCRHook.GetDPIScaling();
         }
         [Benchmark]
-        public void BenchmarkOCR() {
-            ocr.GetScreenText();
+        public void BenchmarkOCRMkl() {
+            ocrMkl.GetScreenText();
         }
         [Benchmark]
-        public void BenchmarkOCRWithInit() {
+        public void BenchmarkOCRMklWithInit() {
             var ocr2 = new OCRHook();
+            ocr2.InitOCR();
+            ocr2.GetScreenText();
+        }
+        [Benchmark]
+        public void BenchmarkOCROpenBlas() {
+            ocrOpenBlas.GetScreenText();
+        }
+        [Benchmark]
+        public void BenchmarkOCROpenBlasWithInit() {
+            var ocr2 = new OCRHook();
+            ocr2.InitOCROpenBlas();
             ocr2.GetScreenText();
         }
     }
