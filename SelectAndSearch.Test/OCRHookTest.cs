@@ -11,12 +11,14 @@ namespace SelectAndSearch.Test {
         [TestMethod]
         public void TestOCR() {
             var ocr = new OCRHook();
+            ocr.InitOCR();
             Task.Delay(1000).Wait();
             ocr.Execute();
         }
         [TestMethod]
         public void BenchmarkOCR() {
             var ocr = new OCRHook();
+            ocr.InitOCR();
             for (int i = 0; i < 60; i++) {
                 ocr.Execute();
             }
