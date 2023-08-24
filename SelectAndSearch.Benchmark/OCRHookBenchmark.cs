@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SelectAndSearch.Common.Hooks;
+using BenchmarkDotNet.Jobs;
 
 namespace SelectAndSearch.Benchmark {
+    [RPlotExporter]
     public class OCRHookBenchmark {
         public OCRHook ocr { get; set; }
         public OCRHookBenchmark() {
@@ -26,12 +28,12 @@ namespace SelectAndSearch.Benchmark {
         }
         [Benchmark]
         public void BenchmarkOCR() {
-            ocr.Execute();
+            ocr.GetScreenText();
         }
         [Benchmark]
         public void BenchmarkOCRWithInit() {
             var ocr2 = new OCRHook();
-            ocr2.Execute();
+            ocr2.GetScreenText();
         }
     }
 }

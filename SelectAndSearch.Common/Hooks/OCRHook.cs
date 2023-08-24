@@ -9,17 +9,32 @@ using System.Threading.Tasks;
 using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
 using OpenCvSharp;
-using System.IO;
 using Point = System.Drawing.Point;
 using SkiaSharp;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Windows.Forms;
+using SelectAndSearch.Common.Interfaces;
+using SelectAndSearch.Common.Services;
+using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 
 namespace SelectAndSearch.Common.Hooks {
     public class OCRHook {
         public PaddleOcrAll all { get; set; }
+        public SearchOption SearchOption { get; set; }
+        public SearchService SearchService { get; set; }
+        public IPopupForm PopupForm { get; set; }
         public OCRHook() {
+            FullOcrModel model = LocalFullModels.ChineseV3;
+            all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()) {
+                AllowRotateDetection = true, /* 允许识别有角度的文字 */
+                Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
+            };
+        }
+        public OCRHook(SearchService searchService, IPopupForm popupForm) {
+            SearchService = searchService;
+            PopupForm = popupForm;
+            SearchOption = SearchService.option;
             FullOcrModel model = LocalFullModels.ChineseV3;
             all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()) {
                 AllowRotateDetection = true, /* 允许识别有角度的文字 */
@@ -244,7 +259,7 @@ namespace SelectAndSearch.Common.Hooks {
 
             return true; // Point is on the same side of all edges.
         }
-        public void Execute() {
+        public (Point, string) GetScreenText() {
             var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
             var scale = GetDPIScaling();
             var actualMousePoint = new Point((int)(screenPoint.X * scale), (int)(screenPoint.Y * scale));
@@ -263,11 +278,19 @@ namespace SelectAndSearch.Common.Hooks {
 
                     if (IsPointInConvexPolygon(points, actualMousePoint)) {
                         Console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
+                        return (screenPoint, region.Text);
                     }
 
                 }
             }
+            return (screenPoint, string.Empty);
         }
-
+        public void Execute() {
+            var text = GetScreenText();
+            SearchOption.SearchText = text.Item2;
+            SearchOption.Skip = 0;
+            SearchOption.Take = 20;
+            PopupForm.ShowForm(text.Item1);
+        }
     }
 }
