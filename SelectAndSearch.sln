@@ -12,28 +12,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectAndSearch.Benchmark", "SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj", "{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelectAndSearch.Benchmark", "SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj", "{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectAndSearch.Common", "SelectAndSearch.Common\SelectAndSearch.Common.csproj", "{72D6EF24-02FC-45AB-8572-EA71EAB85229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelectAndSearch.Common", "SelectAndSearch.Common\SelectAndSearch.Common.csproj", "{72D6EF24-02FC-45AB-8572-EA71EAB85229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		BenchmarkRelease|Any CPU = BenchmarkRelease|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4303C153-C004-45CB-86AA-6F68AF1950BE}.BenchmarkRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{4303C153-C004-45CB-86AA-6F68AF1950BE}.BenchmarkRelease|Any CPU.Build.0 = Release|Any CPU
 		{4303C153-C004-45CB-86AA-6F68AF1950BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4303C153-C004-45CB-86AA-6F68AF1950BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4303C153-C004-45CB-86AA-6F68AF1950BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4303C153-C004-45CB-86AA-6F68AF1950BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95391306-FBC8-472E-B338-2AC308F127BD}.BenchmarkRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{95391306-FBC8-472E-B338-2AC308F127BD}.BenchmarkRelease|Any CPU.Build.0 = Release|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.BenchmarkRelease|Any CPU.ActiveCfg = BenchmarkRelease|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.BenchmarkRelease|Any CPU.Build.0 = BenchmarkRelease|Any CPU
 		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.BenchmarkRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.BenchmarkRelease|Any CPU.Build.0 = Release|Any CPU
 		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Release|Any CPU.ActiveCfg = Release|Any CPU

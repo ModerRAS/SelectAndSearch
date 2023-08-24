@@ -45,4 +45,4 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Benchmark
-      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c Release
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c BenchmarkRelease

@@ -24,8 +24,6 @@ namespace SelectAndSearch.Common.Hooks {
         public SearchOption SearchOption { get; set; }
         public SearchService SearchService { get; set; }
         public IPopupForm PopupForm { get; set; }
-        public OCRHook() {
-        }
         public OCRHook(SearchService searchService, IPopupForm popupForm) {
             SearchService = searchService;
             PopupForm = popupForm;
@@ -39,6 +37,9 @@ namespace SelectAndSearch.Common.Hooks {
                 Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
             };
         }
+#if BenchmarkRelease || DEBUG
+        public OCRHook() {
+        }
         public void InitOCROpenBlas() {
             FullOcrModel model = LocalFullModels.ChineseV3;
             all = new PaddleOcrAll(model, PaddleDevice.Openblas()) {
@@ -46,6 +47,7 @@ namespace SelectAndSearch.Common.Hooks {
                 Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
             };
         }
+#endif
         ~OCRHook() {
             all.Dispose();
         }
