@@ -13,8 +13,8 @@ namespace SelectAndSearch.Benchmark {
         public OCRHook ocrMkl { get; set; }
         public OCRHook ocrOpenBlas { get; set; }
         public OCRHookBenchmark() {
-            ocrMkl = new OCRHook();
-            ocrOpenBlas = new OCRHook();
+            ocrMkl = new OCRHook(null, null);
+            ocrOpenBlas = new OCRHook(null, null);
             ocrMkl.InitOCR();
             ocrOpenBlas.InitOCROpenBlas();
         }
@@ -36,7 +36,7 @@ namespace SelectAndSearch.Benchmark {
         }
         [Benchmark]
         public void BenchmarkOCRMklWithInit() {
-            var ocr2 = new OCRHook();
+            var ocr2 = new OCRHook(null, null);
             ocr2.InitOCR();
             ocr2.GetScreenText();
         }
@@ -46,7 +46,7 @@ namespace SelectAndSearch.Benchmark {
         }
         [Benchmark]
         public void BenchmarkOCROpenBlasWithInit() {
-            var ocr2 = new OCRHook();
+            var ocr2 = new OCRHook(null, null);
             ocr2.InitOCROpenBlas();
             ocr2.GetScreenText();
         }
