@@ -7,7 +7,7 @@ using Lucene.Net.Store;
 using Lucene.Net.Util;
 using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
-using SelectAndSearch.Models;
+using SelectAndSearch.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Util.Reflection.Expressions;
 
-namespace SelectAndSearch.Managers {
+namespace SelectAndSearch.Common.Managers {
     public class LuceneManager {
         public bool GenerateDocument(Question question, out Document doc) {
             doc = new Document();

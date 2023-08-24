@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectAndSearch.Managers {
+namespace SelectAndSearch.Common.Managers {
     public class HighlightManager {
         public HighlightManager() { }
     }

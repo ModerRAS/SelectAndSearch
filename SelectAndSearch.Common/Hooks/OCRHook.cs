@@ -13,8 +13,10 @@ using System.IO;
 using Point = System.Drawing.Point;
 using SkiaSharp;
 using System.Drawing.Imaging;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace SelectAndSearch.Hooks {
+namespace SelectAndSearch.Common.Hooks {
     public class OCRHook {
         public PaddleOcrAll all { get; set; }
         public OCRHook() {
@@ -195,7 +197,7 @@ namespace SelectAndSearch.Hooks {
         }
 
 
-        private static (int, int) GetScreenSize() {
+        public static (int, int) GetScreenSize() {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
             int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
@@ -204,18 +206,18 @@ namespace SelectAndSearch.Hooks {
             return (PhysicalScreenWidth, PhysicalScreenHeight); // 1.25 = 125%
         }
 
-        private static float GetDPIScaling() {
+        public static float GetDPIScaling() {
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             IntPtr desktop = g.GetHdc();
             int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
             int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
 
-            float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+            float ScreenScalingFactor = PhysicalScreenHeight / (float)LogicalScreenHeight;
 
             return ScreenScalingFactor; // 1.25 = 125%
         }
 
-        private static Bitmap GetScreenCapture() {
+        public static Bitmap GetScreenCapture() {
             var (width, height) = GetScreenSize();
             Rectangle tScreenRect = new Rectangle(0, 0, width, height);
             Bitmap tSrcBmp = new Bitmap(width, height); // 用于屏幕原始图片保存
@@ -258,11 +260,11 @@ namespace SelectAndSearch.Hooks {
                     var points = region.Rect.Points().Select(e => {
                         return new Point((int)e.X, (int)e.Y);
                     }).ToArray();
-                    
+
                     if (IsPointInConvexPolygon(points, actualMousePoint)) {
                         Console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
                     }
-                    
+
                 }
             }
         }

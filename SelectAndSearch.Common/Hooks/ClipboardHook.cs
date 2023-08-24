@@ -1,24 +1,24 @@
 ﻿using Newtonsoft.Json;
-using SelectAndSearch.Models;
-using SelectAndSearch.Services;
+using SelectAndSearch.Common.Interfaces;
+using SelectAndSearch.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SearchOption = SelectAndSearch.Models.SearchOption;
+using System.Windows.Forms;
+using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 
-namespace SelectAndSearch.Hooks
-{
-    public class ClipboardHook
-    {
+namespace SelectAndSearch.Common.Hooks {
+    public class ClipboardHook {
         public SearchOption SearchOption { get; set; }
         public SearchService SearchService { get; set; }
-        public PopupForm PopupForm { get; set; }
-        public ClipboardHook(SearchService searchService, PopupForm popupForm) {
+        public IPopupForm PopupForm { get; set; }
+        public ClipboardHook(SearchService searchService, IPopupForm popupForm) {
             SearchService = searchService;
             PopupForm = popupForm;
             SearchOption = SearchService.option;
@@ -32,9 +32,9 @@ namespace SelectAndSearch.Hooks
         /// <param name="wParam"></param>
         /// <param name="lParam"></param>
         /// <returns></returns>
-        public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);
+        public delegate int HookProc(int nCode, int wParam, IntPtr lParam);
 
-        public delegate int GlobalHookProc(int nCode, Int32 wParam, IntPtr lParam);
+        public delegate int GlobalHookProc(int nCode, int wParam, IntPtr lParam);
 
         /// <summary>
         /// 声明键盘钩子事件类型
@@ -52,11 +52,11 @@ namespace SelectAndSearch.Hooks
         int hMouseHook = 0;
 
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        private static extern int SetForegroundWindow(System.IntPtr hwnd);
+        [DllImport("user32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern int SetForegroundWindow(IntPtr hwnd);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "FindWindowA", CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        private static extern System.IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll", EntryPoint = "FindWindowA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         //装置钩子的函数 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
@@ -74,7 +74,7 @@ namespace SelectAndSearch.Hooks
         /// 使用这个函数钩信息传递给链中的下一个钩子过程。
         /// </summary>
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CallNextHookEx(int idHook, int nCode, Int32 wParam, IntPtr lParam);
+        public static extern int CallNextHookEx(int idHook, int nCode, int wParam, IntPtr lParam);
 
 
         #region 引用win32api方法
@@ -169,7 +169,7 @@ namespace SelectAndSearch.Hooks
                 hMouseHook = 0;
             }
             //如果卸下钩子失败 
-            if (!(retKeyboard)) throw new Exception("卸下钩子失败！");
+            if (!retKeyboard) throw new Exception("卸下钩子失败！");
         }
 
         public static byte vbKeyControl = 0x11;  // CTRL 键
@@ -183,7 +183,7 @@ namespace SelectAndSearch.Hooks
         /// <param name="wParam"></param>
         /// <param name="lParam"></param>
         /// <returns></returns>
-        private int KeyboardHookProc(int nCode, Int32 wParam, IntPtr lParam) {
+        private int KeyboardHookProc(int nCode, int wParam, IntPtr lParam) {
             if (nCode >= 0 && wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) {
                 KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
                 Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
@@ -202,12 +202,9 @@ namespace SelectAndSearch.Hooks
                         SearchOption.SearchText = clipboardText;
 
                         Point screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
-                        
+
                         Point point = new Point(screenPoint.X, screenPoint.Y);//窗体位置
-                        PopupForm.StartPosition = FormStartPosition.Manual;//窗体其实位置类型，manual由location指定
-                        PopupForm.Location = point;
-                        PopupForm.TopMost = true;
-                        PopupForm.Visible = true;
+                        PopupForm.ShowForm(point);
 
                         CopyTimes = 0;
                     }
@@ -225,24 +222,6 @@ namespace SelectAndSearch.Hooks
             }
             return CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
             //return 0;
-        }
-
-
-        public void Hide_Form() {
-
-            if (PopupForm != null && PopupForm.Visible) {
-                Rectangle rect = PopupForm.Bounds;
-                Rectangle mouseRect = new Rectangle(new Point(Control.MousePosition.X, Control.MousePosition.Y), new Size(5, 5));
-                if (!rect.Contains(mouseRect)) {
-                    PopupForm.Visible = false;
-                }
-
-            }
-
-        }
-
-        public void Print_MessageBox(string data) {
-            Console.WriteLine(data);
         }
     }
 }

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\ModerRAS\.nuget\packages\masa.blazor\1.0.1\contentFiles\any\net6.0\package.json" />
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="ClosedXML" Version="0.102.0" />
+	<PackageReference Include="ExcelDataReader" Version="3.6.0" />
+	<PackageReference Include="Lucene.Net" Version="4.8.0-beta00016" />
+	<PackageReference Include="Lucene.Net.Analysis.SmartCn" Version="4.8.0-beta00016" />
+	<PackageReference Include="Lucene.Net.Memory" Version="4.8.0-beta00016" />
+	<PackageReference Include="Masa.Blazor" Version="1.0.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.92" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageReference Include="Ninject" Version="3.3.6" />
+	<PackageReference Include="OpenCvSharp4.Extensions" Version="4.8.0.20230708" />
+	<PackageReference Include="OpenCvSharp4.runtime.win" Version="4.8.0.20230708" />
+	<PackageReference Include="OpenCvSharp4.Windows" Version="4.8.0.20230708" />
+	<PackageReference Include="Sdcb.PaddleInference" Version="2.5.0.1" />
+	<PackageReference Include="Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_tr72_sm61_75" Version="2.5.1" />
+	<PackageReference Include="Sdcb.PaddleInference.runtime.win64.mkl" Version="2.5.1" />
+	<PackageReference Include="Sdcb.PaddleInference.runtime.win64.openblas" Version="2.5.1" />
+	<PackageReference Include="Sdcb.PaddleOCR" Version="2.7.0" />
+	<PackageReference Include="Sdcb.PaddleOCR.Models.Local" Version="2.7.0" />
+	<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+  </ItemGroup>
+</Project>

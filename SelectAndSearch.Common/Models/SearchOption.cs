@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectAndSearch.Models {
+namespace SelectAndSearch.Common.Models {
     public class SearchOption {
         public string SearchText { get; set; }
         public int Skip { get; set; }

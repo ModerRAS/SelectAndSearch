@@ -6,7 +6,6 @@
 		<Nullable>enable</Nullable>
 		<PublishSingleFile>true</PublishSingleFile>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<SelfContained>true</SelfContained>
 		<PublishSingleFile>true</PublishSingleFile>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 		<UseWindowsForms>true</UseWindowsForms>
@@ -39,6 +38,10 @@
 		<PackageReference Include="Sdcb.PaddleOCR" Version="2.7.0" />
 		<PackageReference Include="Sdcb.PaddleOCR.Models.Local" Version="2.7.0" />
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SelectAndSearch.Common\SelectAndSearch.Common.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

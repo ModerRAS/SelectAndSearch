@@ -1,14 +1,14 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using ExcelDataReader;
 using Microsoft.AspNetCore.Components.Forms;
-using SelectAndSearch.Models;
+using SelectAndSearch.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectAndSearch.Managers {
+namespace SelectAndSearch.Common.Managers {
     public class ExcelManager {
         public ExcelManager() { }
         public Question ParsePerLine(IExcelDataReader reader) {
@@ -21,10 +21,10 @@ namespace SelectAndSearch.Managers {
                     var answer = reader.GetString(i);
                     question.Answers.Add(answer);
                 }
-            } catch(IndexOutOfRangeException e) {
+            } catch (IndexOutOfRangeException e) {
                 Console.WriteLine(e);
             }
-            
+
             return question;
         }
         public List<Question> ParseDocument(string path) {

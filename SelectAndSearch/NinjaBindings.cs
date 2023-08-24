@@ -1,7 +1,7 @@
 ﻿using Ninject;
-using SelectAndSearch.Hooks;
-using SelectAndSearch.Managers;
-using SelectAndSearch.Services;
+using SelectAndSearch.Common.Hooks;
+using SelectAndSearch.Common.Managers;
+using SelectAndSearch.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

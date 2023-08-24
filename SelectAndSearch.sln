@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectAndSearch.Benchmark", "SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj", "{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectAndSearch.Common", "SelectAndSearch.Common\SelectAndSearch.Common.csproj", "{72D6EF24-02FC-45AB-8572-EA71EAB85229}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95391306-FBC8-472E-B338-2AC308F127BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D271DE8-87DA-4973-BAB9-73E2B6D60C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D6EF24-02FC-45AB-8572-EA71EAB85229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,12 +1,11 @@
-﻿using SelectAndSearch.Managers;
-using SelectAndSearch.Models;
-using SearchOption = SelectAndSearch.Models.SearchOption;
+﻿using SelectAndSearch.Common.Managers;
+using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 
-namespace SelectAndSearch.Services {
+namespace SelectAndSearch.Common.Services {
     public class SearchService {
         public LuceneManager luceneManager { get; set; }
         public static SearchOption option { get; set; } = new SearchOption();
-        public SearchService(LuceneManager luceneManager) { 
+        public SearchService(LuceneManager luceneManager) {
             this.luceneManager = luceneManager;
         }
         public SearchOption Execute() {
@@ -14,12 +13,12 @@ namespace SelectAndSearch.Services {
             option.Skip += option.Take;
             option.Count = length;
             option.Questions = result;
-            return new SearchOption() { 
-                SearchText = option.SearchText, 
-                Count = option.Count, 
-                Questions = option.Questions, 
-                Skip = option.Skip, 
-                Take = option.Take 
+            return new SearchOption() {
+                SearchText = option.SearchText,
+                Count = option.Count,
+                Questions = option.Questions,
+                Skip = option.Skip,
+                Take = option.Take
             };
         }
     }

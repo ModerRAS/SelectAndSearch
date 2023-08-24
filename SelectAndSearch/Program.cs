@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SelectAndSearch.Hooks;
-using SelectAndSearch.Managers;
-using SelectAndSearch.Services;
+using SelectAndSearch.Common.Hooks;
+using SelectAndSearch.Common.Managers;
+using SelectAndSearch.Common.Services;
 
 namespace SelectAndSearch {
     internal static class Program {

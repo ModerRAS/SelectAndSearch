@@ -1,16 +1,16 @@
-﻿using SelectAndSearch.Managers;
-using SelectAndSearch.Models;
+﻿using SelectAndSearch.Common.Managers;
+using SelectAndSearch.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelectAndSearch.Services {
+namespace SelectAndSearch.Common.Services {
     public class ImportService {
         public ExcelManager ExcelManager { get; set; }
         public LuceneManager LuceneManager { get; set; }
-        public ImportService(ExcelManager excelManager, LuceneManager luceneManager) { 
+        public ImportService(ExcelManager excelManager, LuceneManager luceneManager) {
             ExcelManager = excelManager;
             LuceneManager = luceneManager;
         }
