@@ -25,7 +25,9 @@ namespace SelectAndSearch {
                     service.AddSingleton<MainForm>();
                     service.AddSingleton<IPopupForm,PopupForm>();
                     //service.AddSingleton<Popup>();
-                    service.AddTransient<ClipboardHook>();
+                    service.AddSingleton<ClipboardHook>();
+                    service.AddSingleton<MouseHook>();
+                    service.AddSingleton<OCRHook>();
                     service.AddSingleton(service);
                 })
                 .ConfigureLogging(logging => {
