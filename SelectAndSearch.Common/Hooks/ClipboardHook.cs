@@ -2,6 +2,7 @@
 using SelectAndSearch.Common.API;
 using SelectAndSearch.Common.Enums;
 using SelectAndSearch.Common.Interfaces;
+using SelectAndSearch.Common.Models;
 using SelectAndSearch.Common.Services;
 using System;
 using System.Collections.Generic;
@@ -44,31 +45,11 @@ namespace SelectAndSearch.Common.Hooks {
         #endregion
 
 
-        //声明键盘钩子的封送结构类型 
-        [StructLayout(LayoutKind.Sequential)]
-        public class KeyboardHookStruct {
-            public int vkCode; //表示一个在1到254间的虚似键盘码 
-            public int scanCode; //表示硬件扫描码 
-            public int flags;
-            public int time;
-            public int dwExtraInfo;
-        }
+        
 
-        //Declare wrapper managed POINT class.
-        [StructLayout(LayoutKind.Sequential)]
-        public class POINT {
-            public int x;
-            public int y;
-        }
+        
 
-        //Declare wrapper managed MouseHookStruct class.
-        [StructLayout(LayoutKind.Sequential)]
-        public class MouseHookStruct {
-            public POINT pt;
-            public int hwnd;
-            public int wHitTestCode;
-            public int dwExtraInfo;
-        }
+        
 
 
 
