@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using SelectAndSearch.Common.Hooks;
 using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Managers;
+using SelectAndSearch.Common.Models;
 using SelectAndSearch.Common.Services;
 
 namespace SelectAndSearch {
@@ -23,11 +24,13 @@ namespace SelectAndSearch {
                     service.AddTransient<ImportService>();
                     service.AddTransient<SearchService>();
                     service.AddSingleton<MainForm>();
+                    service.AddSingleton<KeyCaptureDialog>();
                     service.AddSingleton<IPopupForm,PopupForm>();
                     //service.AddSingleton<Popup>();
                     service.AddSingleton<ClipboardHook>();
                     service.AddSingleton<MouseHook>();
                     service.AddSingleton<OCRHook>();
+                    service.AddSingleton<GlobalConfig>();
                     service.AddSingleton(service);
                 })
                 .ConfigureLogging(logging => {
