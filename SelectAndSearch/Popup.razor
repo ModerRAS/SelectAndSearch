@@ -37,9 +37,13 @@
         });
     }
     private void Update() {
-        if (searchOption is null || !searchOption.SearchText.Equals(SearchService.option.SearchText)) {
-            searchOption = searchService.Execute();
-            _items = searchOption.Questions;
+        try {
+            if (searchOption is null || !searchOption.SearchText.Equals(SearchService.option.SearchText)) {
+                searchOption = searchService.Execute();
+                _items = searchOption.Questions;
+            }
+        } catch (Exception e) {
+            Console.WriteLine(e);
         }
         
     }
