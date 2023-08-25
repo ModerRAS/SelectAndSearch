@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.Extensions.DependencyInjection;
 using SelectAndSearch.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace SelectAndSearch {
     public partial class PopupForm : Form, IPopupForm {
@@ -43,12 +38,14 @@ namespace SelectAndSearch {
             this.Visible = true;
         }
 
+        
         public void HideForm() {
             if (this != null && this.Visible) {
                 Rectangle rect = this.Bounds;
                 Rectangle mouseRect = new Rectangle(new Point(Control.MousePosition.X, Control.MousePosition.Y), new Size(5, 5));
                 if (!rect.Contains(mouseRect)) {
                     this.Visible = false;
+
                 }
 
             }
