@@ -1,10 +1,14 @@
 @page "/"
 @using SelectAndSearch.Common.Hooks;
 @using SelectAndSearch.Common.Services;
-    
+@using SelectAndSearch.Common.Models;
+
 @inject ImportService importService
 @inject ClipboardHook clipboardHook;
 @inject MouseHook mouseHook;
+@inject OCRHook ocrHook;
+@inject KeyCaptureDialog KeyCaptureDialog;
+@inject GlobalConfig GlobalConfig;
 
 <PageTitle>Index</PageTitle>
 
@@ -15,10 +19,15 @@
 <MButton Elevation="2" Color="primary" OnClick="@clipboardHook.StopHook">关闭键盘钩子</MButton>
 <MButton Elevation="2" Color="primary" OnClick="@mouseHook.StartHook">启动鼠标钩子</MButton>
 <MButton Elevation="2" Color="primary" OnClick="@mouseHook.StopHook">关闭鼠标钩子</MButton>
+<MButton Elevation="2" Color="primary" OnClick="@BindOCRKey">绑定OCR快捷键(@OCRBindingKeyString)</MButton>
+<MButton Elevation="2" Color="primary" OnClick="@ocrHook.StartHook">启动OCR钩子</MButton>
+<MButton Elevation="2" Color="primary" OnClick="@ocrHook.StopHook">关闭OCR钩子</MButton>
 <SurveyPrompt Title="This is fire-new Blazor UI!" />
 
 @code {
     public string filenames { get; set; } = string.Empty;
+    public string OCRBindingKeyString { get => OCRBindingKey.ToString(); } 
+    public Keys OCRBindingKey { get => GlobalConfig.OCRBindingKey; set => GlobalConfig.OCRBindingKey = value; }
     public async Task SelectFiles() {
         OpenFileDialog dialog = new OpenFileDialog();
         dialog.Multiselect = true;
@@ -29,6 +38,16 @@
 
             await importService.Execute(dialog.FileNames.ToList());
             filenames = string.Join(";", dialog.FileNames);
+        }
+    }
+    public void BindOCRKey() {
+        OCRBindingKey = GetBindingKey();
+    }
+    public Keys GetBindingKey() {
+        if (KeyCaptureDialog.ShowDialog() == DialogResult.OK) {
+            return KeyCaptureDialog.CapturedKey;
+        } else {
+            return Keys.Cancel;
         }
     }
 }
