@@ -23,7 +23,7 @@ namespace SelectAndSearch {
                     service.AddTransient<ImportService>();
                     service.AddTransient<SearchService>();
                     service.AddSingleton<MainForm>();
-                    service.AddTransient<IPopupForm,PopupForm>();
+                    service.AddSingleton<IPopupForm,PopupForm>();
                     //service.AddSingleton<Popup>();
                     service.AddTransient<ClipboardHook>();
                     service.AddSingleton(service);
