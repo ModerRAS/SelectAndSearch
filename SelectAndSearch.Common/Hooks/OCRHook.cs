@@ -21,7 +21,7 @@ using SelectAndSearch.Common.Enums;
 using SelectAndSearch.Common.API;
 
 namespace SelectAndSearch.Common.Hooks {
-    public class OCRHook {
+    public class OCRHook : IHook {
         public PaddleOcrAll all { get; set; }
         public SearchOption SearchOption { get; set; }
         public SearchService SearchService { get; set; }
@@ -134,6 +134,14 @@ namespace SelectAndSearch.Common.Hooks {
             SearchOption.Skip = 0;
             SearchOption.Take = 20;
             PopupForm.ShowForm(text.Item1);
+        }
+
+        public void StartHook() {
+            throw new NotImplementedException();
+        }
+
+        public void StopHook() {
+            throw new NotImplementedException();
         }
     }
 }
