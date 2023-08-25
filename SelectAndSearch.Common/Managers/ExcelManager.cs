@@ -17,11 +17,21 @@ namespace SelectAndSearch.Common.Managers {
                 CorrectAnswer = reader.GetString(1),
             };
             try {
-                for (int i = 2; !string.IsNullOrWhiteSpace(reader.GetString(i)); i++) {
-                    var answer = reader.GetString(i);
+                for (int i = 2; ; i++) {
+                    var answer = string.Empty;
+                    try {
+                        answer = reader.GetString(i);
+                    } catch (Exception e) {
+                        answer = reader.GetDouble(i).ToString();
+                    }
+                    if (string.IsNullOrWhiteSpace(answer)) {
+                        break;
+                    }
                     question.Answers.Add(answer);
                 }
             } catch (IndexOutOfRangeException e) {
+                Console.WriteLine(e);
+            } catch (Exception e) { 
                 Console.WriteLine(e);
             }
 
