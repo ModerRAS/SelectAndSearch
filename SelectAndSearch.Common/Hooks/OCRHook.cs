@@ -19,6 +19,10 @@ using SelectAndSearch.Common.Services;
 using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 using SelectAndSearch.Common.Enums;
 using SelectAndSearch.Common.API;
+using SelectAndSearch.Common.Models;
+using static SelectAndSearch.Common.Hooks.ClipboardHook;
+using static SelectAndSearch.Common.Interfaces.IHook;
+using System.Diagnostics;
 
 namespace SelectAndSearch.Common.Hooks {
     public class OCRHook : IHook {
@@ -26,10 +30,14 @@ namespace SelectAndSearch.Common.Hooks {
         public SearchOption SearchOption { get; set; }
         public SearchService SearchService { get; set; }
         public IPopupForm PopupForm { get; set; }
-        public OCRHook(SearchService searchService, IPopupForm popupForm) {
-            if (searchService is null || popupForm is null) {
+        public GlobalConfig GlobalConfig { get; set; }
+        public PaddleOcrResult OcrResult { get; set; }
+        public bool IsRunning { get; set; }
+        public OCRHook(SearchService searchService, IPopupForm popupForm, GlobalConfig globalConfig) {
+            if (searchService is null || popupForm is null || globalConfig is null) {
                 return;
             }
+            GlobalConfig = globalConfig;
             SearchService = searchService;
             PopupForm = popupForm;
             SearchOption = SearchService.option;
@@ -102,29 +110,38 @@ namespace SelectAndSearch.Common.Hooks {
 
             return true; // Point is on the same side of all edges.
         }
-        public (Point, string) GetScreenText() {
-            var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
-            var scale = GetDPIScaling();
-            var actualMousePoint = new Point((int)(screenPoint.X * scale), (int)(screenPoint.Y * scale));
-            Console.WriteLine($"{screenPoint.X}, {screenPoint.Y}, {scale}");
+        public PaddleOcrResult GetOcrResult() {
             var cap = GetScreenCapture();
             var stream = new MemoryStream();
             cap.Save(stream, ImageFormat.Png);
             stream.Position = 0;
             using (Mat src = Cv2.ImDecode(stream.ToArray(), ImreadModes.Color)) {
                 PaddleOcrResult result = all.Run(src);
-                //Console.WriteLine("Detected all texts: \n" + result.Text);
-                foreach (PaddleOcrResultRegion region in result.Regions) {
-                    var points = region.Rect.Points().Select(e => {
-                        return new Point((int)e.X, (int)e.Y);
-                    }).ToArray();
+                return result;
+            }
+        }
+        public Point GetActualMousePostion(Point mousePosition) {
+            var scale = GetDPIScaling();
+            var actualMousePoint = new Point((int)(mousePosition.X * scale), (int)(mousePosition.Y * scale));
+            return actualMousePoint;
+        }
+        public void Update() {
+            OcrResult = GetOcrResult();
+        }
+        public (Point, string) GetScreenText() {
+            var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
+            var actualMousePoint = GetActualMousePostion(screenPoint);
+            var result = OcrResult;
+            foreach (PaddleOcrResultRegion region in result.Regions) {
+                var points = region.Rect.Points().Select(e => {
+                    return new Point((int)e.X, (int)e.Y);
+                }).ToArray();
 
-                    if (IsPointInConvexPolygon(points, actualMousePoint)) {
-                        Console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
-                        return (screenPoint, region.Text);
-                    }
-
+                if (IsPointInConvexPolygon(points, actualMousePoint)) {
+                    Console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
+                    return (screenPoint, region.Text);
                 }
+
             }
             return (screenPoint, string.Empty);
         }
@@ -136,12 +153,66 @@ namespace SelectAndSearch.Common.Hooks {
             PopupForm.ShowForm(text.Item1);
         }
 
+        private bool MatchKeys(Keys expectedKeys, Keys actualKeys) {
+            return (expectedKeys & Keys.Modifiers) == (actualKeys & Keys.Modifiers) &&
+                   (expectedKeys & Keys.KeyCode) == (actualKeys & Keys.KeyCode);
+        }
+        /// <summary>
+        /// 键盘钩子句柄
+        /// </summary>
+        int hKeyboardHook = 0;
+        private int KeyboardHookProc(int nCode, int wParam, IntPtr lParam) {
+            if (nCode >= 0 && wParam == (int)KeyboardKeyEvent.WM_KEYDOWN || wParam == (int)KeyboardKeyEvent.WM_SYSKEYDOWN) {
+                KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
+                Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
+                if (MatchKeys(GlobalConfig.OCRBindingKey, keyData | Control.ModifierKeys)) {
+                    Execute();
+                }
+                //截获CONTROL+C 
+                //if (keyData.ToString() == "C" && Control.ModifierKeys == Keys.Control) {
+                    
+                //} 
+
+
+
+
+            }
+            return Win32API.CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
+            //return 0;
+        }
+        /// <summary>
+        /// 声明键盘钩子事件类型
+        /// </summary>
+        HookProc KeyboardHookProcedure;
         public void StartHook() {
-            throw new NotImplementedException();
+            if (hKeyboardHook == 0) {
+                IsRunning = true;
+                Task.Run(() => {
+                    while (IsRunning) {
+                        var StartTime = DateTime.Now;
+                        Update();
+                        var StopTime = DateTime.Now;
+                        Task.Delay(5000 - (StopTime - StartTime).Milliseconds).Wait();
+                    }
+                });
+                //实例化委托
+                KeyboardHookProcedure = new HookProc(KeyboardHookProc);
+                Process curProcess = Process.GetCurrentProcess();
+                ProcessModule curModule = curProcess.MainModule;
+                hKeyboardHook = Win32API.SetWindowsHookEx((int)KeyboardKeyEvent.WH_KEYBOARD_LL, KeyboardHookProcedure, Win32API.GetModuleHandle(curModule.ModuleName), 0);
+            }
         }
 
         public void StopHook() {
-            throw new NotImplementedException();
+            bool retKeyboard = true;
+            IsRunning = false;
+
+            if (hKeyboardHook != 0) {
+                retKeyboard = Win32API.UnhookWindowsHookEx(hKeyboardHook);
+                hKeyboardHook = 0;
+            }
+            //如果卸下钩子失败 
+            if (!retKeyboard) throw new Exception("卸下钩子失败！");
         }
     }
 }
