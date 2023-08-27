@@ -45,7 +45,18 @@ namespace SelectAndSearch.Common.Hooks {
         }
         public void InitOCR() {
             FullOcrModel model = LocalFullModels.ChineseV3;
-            all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()) {
+
+            all = new PaddleOcrAll(model,
+#if DEBUG || RELEASE_MKL || Release
+                PaddleDevice.Mkldnn()
+#elif RELEASE_CUDA118_CUDNN86_TR85_SM86_89 || RELEASE_CUDA102_CUDNN76_TR72_SM61_75
+                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("det.txt")),
+                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("cls.txt")),
+                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("rec.txt"))
+#elif RELEASE_OPENBLAS || RELEASE_OPENBLAS_NOAVX
+                PaddleDevice.Openblas()
+#endif
+                ) {
                 AllowRotateDetection = true, /* 允许识别有角度的文字 */
                 Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
             };
