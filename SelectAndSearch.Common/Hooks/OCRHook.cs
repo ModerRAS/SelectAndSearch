@@ -47,7 +47,7 @@ namespace SelectAndSearch.Common.Hooks {
             FullOcrModel model = LocalFullModels.ChineseV3;
 
             all = new PaddleOcrAll(model,
-#if DEBUG || RELEASE_MKL || Release
+#if DEBUG || RELEASE_MKL || RELEASE
                 PaddleDevice.Mkldnn()
 #elif RELEASE_CUDA118_CUDNN86_TR85_SM86_89 || RELEASE_CUDA102_CUDNN76_TR72_SM61_75
                 PaddleDevice.Gpu().And(PaddleDevice.TensorRt("det.txt")),
