@@ -10,9 +10,10 @@ namespace SelectAndSearch.Test {
     public class OCRHookTest {
         [TestMethod]
         public void TestOCR() {
-            var ocr = new OCRHook(null, null);
+            var ocr = new OCRHook(null, null, null);
             ocr.InitOCR();
             Task.Delay(1000).Wait();
+            ocr.Update();
             ocr.GetScreenText();
         }
     }

@@ -11,12 +11,9 @@ namespace SelectAndSearch.Benchmark {
     [RPlotExporter]
     public class OCRHookBenchmark {
         public OCRHook ocrMkl { get; set; }
-        public OCRHook ocrOpenBlas { get; set; }
         public OCRHookBenchmark() {
             ocrMkl = new OCRHook(null, null, null);
-            ocrOpenBlas = new OCRHook(null, null, null);
             ocrMkl.InitOCR();
-            ocrOpenBlas.InitOCROpenBlas();
         }
         [Benchmark]
         public void BenchmarkGetScreenSize() {
@@ -32,22 +29,14 @@ namespace SelectAndSearch.Benchmark {
         }
         [Benchmark]
         public void BenchmarkOCRMkl() {
+            ocrMkl.Update();
             ocrMkl.GetScreenText();
         }
         [Benchmark]
         public void BenchmarkOCRMklWithInit() {
             var ocr2 = new OCRHook(null, null, null);
             ocr2.InitOCR();
-            ocr2.GetScreenText();
-        }
-        [Benchmark]
-        public void BenchmarkOCROpenBlas() {
-            ocrOpenBlas.GetScreenText();
-        }
-        [Benchmark]
-        public void BenchmarkOCROpenBlasWithInit() {
-            var ocr2 = new OCRHook(null, null, null);
-            ocr2.InitOCROpenBlas();
+            ocr2.Update();
             ocr2.GetScreenText();
         }
     }
