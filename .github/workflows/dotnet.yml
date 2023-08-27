@@ -34,11 +34,11 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c { matrix.configuration } -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
+      run: dotnet publish -c ${{ matrix.configuration }} -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: SelectAndSearch_{ matrix.configuration }
+        name: SelectAndSearch_${{ matrix.configuration }}
         path: SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
   benchmark:
     runs-on: windows-latest
@@ -57,5 +57,5 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Benchmark { matrix.configuration }
-      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c { matrix.configuration }
+    - name: Benchmark ${{ matrix.configuration }}
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c ${{ matrix.configuration }}
