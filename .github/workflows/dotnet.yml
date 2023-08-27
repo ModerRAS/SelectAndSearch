@@ -44,5 +44,9 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Benchmark
-      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c BenchmarkRelease
+    - name: Benchmark Mkl
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c Release_mkl
+    - name: Benchmark Openblas
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c Release_openblas
+    - name: Benchmark Openblas No AVX
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c Release_openblas_noavx
