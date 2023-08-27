@@ -34,7 +34,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c ${{ matrix.configuration }} -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
+      run: dotnet publish ./SelectAndSearch/SelectAndSearch.csproj -c ${{ matrix.configuration }} -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
