@@ -203,7 +203,8 @@ namespace SelectAndSearch.Common.Hooks {
                         var StartTime = DateTime.Now;
                         Update();
                         var StopTime = DateTime.Now;
-                        Task.Delay(5000 - (StopTime - StartTime).Milliseconds).Wait();
+                        var DelayTime = 5000 - (StopTime - StartTime).Milliseconds;
+                        Task.Delay(DelayTime > 0 ? DelayTime : 0).Wait();
                     }
                 });
                 //实例化委托
