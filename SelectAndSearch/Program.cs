@@ -32,6 +32,9 @@ namespace SelectAndSearch {
                     service.AddSingleton<OCRHook>();
                     service.AddSingleton<GlobalConfig>();
                     service.AddSingleton(service);
+#if DEBUG
+                    service.AddBlazorWebViewDeveloperTools();
+#endif
                 })
                 .ConfigureLogging(logging => {
                     logging.ClearProviders();
@@ -40,6 +43,9 @@ namespace SelectAndSearch {
                         options.SingleLine = true;
                         options.TimestampFormat = "[yyyy/MM/dd HH:mm:ss] ";
                     });
+#if DEBUG
+                    logging.AddDebug();
+#endif
                 }).Build();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
