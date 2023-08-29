@@ -4,10 +4,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
-		<PublishSingleFile>true</PublishSingleFile>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<PublishSingleFile>true</PublishSingleFile>
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>2276d0f3-0223-406a-a525-ef9183524508</UserSecretsId>
@@ -33,10 +30,6 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_cuda118_cudnn86_tr85_sm86_89|AnyCPU'">
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Content Remove="C:\Users\ModerRAS\.nuget\packages\masa.blazor\1.0.1\contentFiles\any\net6.0\package.json" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Masa.Blazor" Version="1.0.1" />
