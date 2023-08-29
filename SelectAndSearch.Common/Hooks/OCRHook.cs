@@ -141,6 +141,9 @@ namespace SelectAndSearch.Common.Hooks {
         }
         public (Point, string) GetScreenText() {
             var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
+            if (OcrResult is null) {
+                return (screenPoint, string.Empty);
+            }
             var actualMousePoint = GetActualMousePostion(screenPoint);
             var result = OcrResult;
             foreach (PaddleOcrResultRegion region in result.Regions) {
