@@ -36,5 +36,34 @@ namespace SelectAndSearch.Common.Models {
                 return answerNumber;
             }
         }
+        public bool Contain(IEnumerable<Question> questions) {
+            foreach (var question in questions) {
+                if (question.Equals(this)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool Equals(Question other) {
+            if (other == null) {
+                return false;
+            }
+            if (!Title.Equals(other.Title)) {
+                return false;
+            }
+            if (!Remark.Equals(other.Remark)) {
+                return false;
+            }
+            if (!CorrectAnswer.Equals(other.CorrectAnswer)) {
+                return false;
+            }
+            if (Answers.Except(other.Answers).Any()) {
+                return false;
+            }
+            return true;
+        }
+        public override int GetHashCode() {
+            return Title.GetHashCode()+Remark.GetHashCode()+CorrectAnswer.GetHashCode()+Answers.GetHashCode();
+        }
     }
 }
