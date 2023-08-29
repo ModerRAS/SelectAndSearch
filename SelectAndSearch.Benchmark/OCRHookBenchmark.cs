@@ -28,16 +28,16 @@ namespace SelectAndSearch.Benchmark {
             var tmp = OCRHook.GetDPIScaling();
         }
         [Benchmark]
-        public void BenchmarkOCRMkl() {
+        public void BenchmarkOCR() {
             ocrMkl.Update();
-            ocrMkl.GetScreenText();
+            //ocrMkl.GetScreenText();
         }
         [Benchmark]
-        public void BenchmarkOCRMklWithInit() {
+        public void BenchmarkOCRWithInit() {
             var ocr2 = new OCRHook(null, null, null);
             ocr2.InitOCR();
             ocr2.Update();
-            ocr2.GetScreenText();
+            //ocr2.GetScreenText();
         }
     }
 }
