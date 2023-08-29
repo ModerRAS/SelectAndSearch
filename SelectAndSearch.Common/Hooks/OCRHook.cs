@@ -206,7 +206,8 @@ namespace SelectAndSearch.Common.Hooks {
                         var StartTime = DateTime.Now;
                         Update();
                         var StopTime = DateTime.Now;
-                        var DelayTime = 5000 - (StopTime - StartTime).Milliseconds;
+                        var UseTime = (StopTime - StartTime).Milliseconds;
+                        var DelayTime = 2000 - UseTime;
                         Task.Delay(DelayTime > 0 ? DelayTime : 0).Wait();
                     }
                 });
