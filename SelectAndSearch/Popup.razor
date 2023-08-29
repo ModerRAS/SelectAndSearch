@@ -4,6 +4,7 @@
 @using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 @inherits LayoutComponentBase
 @inject SearchService searchService;
+@inject IJSRuntime JsRuntime
 
 <MApp>
 
@@ -34,16 +35,17 @@
         timer.Start();
     }
     private void OnTimerCallback() {
-        _ = InvokeAsync(() => {
-            Update();
-            StateHasChanged();
+        _ = InvokeAsync(async () => {
+            await Update();
         });
     }
-    private void Update() {
+    private async Task Update() {
         try {
             if (searchOption is null || !searchOption.SearchText.Equals(SearchService.option.SearchText)) {
                 searchOption = searchService.Execute();
                 _items = searchOption.Questions;
+                await JsRuntime.InvokeVoidAsync("ScrollToTop");
+                StateHasChanged();
             }
         } catch (Exception e) {
             Console.WriteLine(e);
