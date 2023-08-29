@@ -25,7 +25,7 @@ namespace SelectAndSearch {
 
             //blazorWebView1.Location = new Point(0, 0);
             //blazorWebView1.Size = this.Size;
-            blazorWebView1.HostPage = "wwwroot/index.html";
+            blazorWebView1.HostPage = "wwwroot/Popup.html";
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<Popup>("#app");
             blazorWebView1.AutoScroll = false;
