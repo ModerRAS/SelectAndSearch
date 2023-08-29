@@ -29,9 +29,9 @@
             // blazorWebView1
             // 
             blazorWebView1.Anchor = AnchorStyles.None;
-            blazorWebView1.Location = new Point(0, 0);
+            blazorWebView1.Location = new Point(0, -1);
             blazorWebView1.Name = "blazorWebView1";
-            blazorWebView1.Size = new Size(500, 250);
+            blazorWebView1.Size = new Size(500, 505);
             blazorWebView1.TabIndex = 0;
             blazorWebView1.Text = "blazorWebView1";
             // 
@@ -42,7 +42,7 @@
             AutoScroll = true;
             AutoScrollMinSize = new Size(500, 250);
             AutoValidate = AutoValidate.EnablePreventFocusChange;
-            ClientSize = new Size(500, 250);
+            ClientSize = new Size(500, 500);
             Controls.Add(blazorWebView1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "PopupForm";
