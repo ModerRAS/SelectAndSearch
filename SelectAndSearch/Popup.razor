@@ -27,7 +27,7 @@
 
 @code {
     private List<Question> _items = new();
-    private System.Timers.Timer timer = new(1000);
+    private System.Timers.Timer timer = new(250);
     private SearchOption searchOption { get; set; }
     protected override void OnInitialized() {
         timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
