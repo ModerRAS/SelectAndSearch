@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         configuration:
+        - Release
         - Release_mkl
         - Release_openblas
         - Release_openblas_noavx
