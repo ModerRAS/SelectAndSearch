@@ -13,6 +13,7 @@
                 var tmp = Question.CorrectAnswerNumber.Contains(i);
                 if (tmp) {
                     <MAlert Dense
+                    Class="pa-1 ma-1"
                     Color="green"
                     Type="AlertTypes.Success">
                     @value
@@ -20,6 +21,7 @@
                 } else {
                     <MAlert Dense Outlined
                     Color="red"
+                    Class="pa-1 ma-1"
                     Type="AlertTypes.Error">
                     @value
                     </MAlert>
