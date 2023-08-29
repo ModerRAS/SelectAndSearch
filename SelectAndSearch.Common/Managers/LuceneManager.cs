@@ -44,7 +44,7 @@ namespace SelectAndSearch.Common.Managers {
             remark.Boost = 1F;
             doc.Add(remark);
 
-            var indexedText = new TextField("IndexedTest", JsonConvert.SerializeObject(question), Field.Store.YES);
+            var indexedText = new TextField("IndexedText", JsonConvert.SerializeObject(question), Field.Store.YES);
             indexedText.Boost = 1F;
             doc.Add(indexedText);
 
@@ -88,7 +88,7 @@ namespace SelectAndSearch.Common.Managers {
             return writer;
         }
 
-        private List<string> GetKeyWords(string q) {
+        public List<string> GetKeyWords(string q) {
             List<string> keyworkds = new List<string>();
             Analyzer analyzer = new SmartChineseAnalyzer(LuceneVersion.LUCENE_48);
             using (var ts = analyzer.GetTokenStream(null, q)) {
@@ -108,14 +108,30 @@ namespace SelectAndSearch.Common.Managers {
             }
             return keyworkds;
         }
+        public (int, ScoreDoc[]) RecursiveSearch(IEnumerable<string> q, int Skip, int Take, IndexSearcher searcher) {
+            var items = q.SkipWhile(x => float.TryParse(x, out var num));
+            var keyWordQuery = new BooleanQuery();
+            foreach (var item in items) {
+                keyWordQuery.Add(new TermQuery(new Term("IndexedTest", item)), Occur.SHOULD);
+            }
+            var top = searcher.Search(keyWordQuery, Skip + Take);
+            var total = top.TotalHits;
+            var hits = top.ScoreDocs;
+            if (total > 0) {
+                return (total, hits);
+            } else {
+                return RecursiveSearch(items.Skip(1).Take(items.ToList().Count - 2), Skip, Take, searcher);
+            }
+        }
         public (int, List<Question>) Search(string q, int Skip, int Take) {
             IndexReader reader = DirectoryReader.Open(FSDirectory.Open("Index_Data/"));
 
             var searcher = new IndexSearcher(reader);
 
+            var items = GetKeyWords(q).SkipWhile(x => float.TryParse(x, out var num));
             var keyWordQuery = new BooleanQuery();
-            foreach (var item in GetKeyWords(q)) {
-                keyWordQuery.Add(new TermQuery(new Term("IndexedTest", item)), Occur.MUST);
+            foreach (var item in items) {
+                keyWordQuery.Add(new TermQuery(new Term("IndexedText", item)), Occur.SHOULD);
             }
             var top = searcher.Search(keyWordQuery, Skip + Take);
             var total = top.TotalHits;
@@ -126,15 +142,13 @@ namespace SelectAndSearch.Common.Managers {
             foreach (var hit in hits) {
                 if (id++ < Skip) continue;
                 var document = searcher.Doc(hit.Doc);
-                question.Add(new Question() {
-                    Title = document.Get("Title"),
-                    Answers = JsonConvert.DeserializeObject<List<string>>(document.Get("Answers")),
-                    CorrectAnswer = document.Get("CorrectAnswer"),
-                    Remark = document.Get("Remark")
-
-                });
+                var per = JsonConvert.DeserializeObject<Question>(document.Get("IndexedText"));
+                if (per.Contain(question)) { continue; }
+                else {
+                    question.Add(per);
+                }
             }
-            return (total, question);
+            return (total, question.ToList());
         }
     }
 }
