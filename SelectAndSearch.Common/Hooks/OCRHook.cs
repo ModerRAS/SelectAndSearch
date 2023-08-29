@@ -121,8 +121,7 @@ namespace SelectAndSearch.Common.Hooks {
 
             return true; // Point is on the same side of all edges.
         }
-        public PaddleOcrResult GetOcrResult() {
-            var cap = GetScreenCapture();
+        public PaddleOcrResult GetOcrResult(Bitmap cap) {
             var stream = new MemoryStream();
             cap.Save(stream, ImageFormat.Png);
             stream.Position = 0;
@@ -137,7 +136,8 @@ namespace SelectAndSearch.Common.Hooks {
             return actualMousePoint;
         }
         public void Update() {
-            OcrResult = GetOcrResult();
+            var cap = GetScreenCapture();
+            OcrResult = GetOcrResult(cap);
         }
         public (Point, string) GetScreenText() {
             var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
