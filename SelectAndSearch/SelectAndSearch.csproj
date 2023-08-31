@@ -47,6 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\SelectAndSearch.Common.OCR.PaddleOCR\SelectAndSearch.Common.OCR.PaddleOCR.csproj" />
 	  <ProjectReference Include="..\SelectAndSearch.Common\SelectAndSearch.Common.csproj" />
 	</ItemGroup>
 
@@ -59,11 +60,6 @@
 		<MSBuild Projects="$(ProjectFileName)" Targets="Publish" Properties="ApplicationVersion=$(BUILD_VERSION)" />
 		<!-- Write publish.htm file for ClickOnce -->
 		<Copy SourceFiles="$(ProjectDir)\Publish.html" DestinationFiles="$(PublishDir)\Publish.html" />
-		<FileUpdate Files="$(PublishDir)\Publish.html"
-					IgnoreCase="true"
-					Multiline="true"
-					Singleline="false"
-					Regex="{VERSION}"
-					ReplacementText="$(BUILD_VERSION)" />
+		<FileUpdate Files="$(PublishDir)\Publish.html" IgnoreCase="true" Multiline="true" Singleline="false" Regex="{VERSION}" ReplacementText="$(BUILD_VERSION)" />
 	</Target>
 </Project>

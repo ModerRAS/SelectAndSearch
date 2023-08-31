@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SelectAndSearch.Common.Interfaces {
+﻿namespace SelectAndSearch.Common.Interfaces {
     public interface IHook {
         public void StartHook();
         public void StopHook();

@@ -5,17 +5,9 @@ using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
-using Microsoft.Web.WebView2.Core;
 using Newtonsoft.Json;
 using SelectAndSearch.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Util.Reflection.Expressions;
 
 namespace SelectAndSearch.Common.Managers {
     public class LuceneManager {

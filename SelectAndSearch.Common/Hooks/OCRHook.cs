@@ -1,11 +1,5 @@
-﻿using Sdcb.PaddleOCR.Models.Local;
-using Sdcb.PaddleOCR.Models;
-using System.Runtime.InteropServices;
-using Sdcb.PaddleInference;
-using Sdcb.PaddleOCR;
-using OpenCvSharp;
+﻿using System.Runtime.InteropServices;
 using Point = System.Drawing.Point;
-using System.Drawing.Imaging;
 using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Services;
 using SearchOption = SelectAndSearch.Common.Models.SearchOption;
@@ -17,14 +11,14 @@ using System.Diagnostics;
 
 namespace SelectAndSearch.Common.Hooks {
     public class OCRHook : IHook {
-        public PaddleOcrAll all { get; set; }
         public SearchOption SearchOption { get; set; }
         public SearchService SearchService { get; set; }
         public IPopupForm PopupForm { get; set; }
         public GlobalConfig GlobalConfig { get; set; }
-        public PaddleOcrResult OcrResult { get; set; }
         public bool IsRunning { get; set; }
-        public OCRHook(SearchService searchService, IPopupForm popupForm, GlobalConfig globalConfig) {
+        public IOCR OCR { get; set; }
+        public OCRHook(SearchService searchService, IPopupForm popupForm, GlobalConfig globalConfig, IOCR OCR) {
+            this.OCR = OCR;
             if (searchService is null || popupForm is null || globalConfig is null) {
                 return;
             }
@@ -32,36 +26,6 @@ namespace SelectAndSearch.Common.Hooks {
             SearchService = searchService;
             PopupForm = popupForm;
             SearchOption = SearchService.option;
-            InitOCR();
-        }
-        public void InitOCR() {
-            FullOcrModel model = LocalFullModels.ChineseV3;
-
-            all = new PaddleOcrAll(model,
-#if DEBUG || RELEASE_MKL || RELEASE
-                PaddleDevice.Mkldnn()
-#elif RELEASE_CUDA118_CUDNN86_TR85_SM86_89 || RELEASE_CUDA102_CUDNN76_TR72_SM61_75
-                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("det.txt")),
-                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("cls.txt")),
-                PaddleDevice.Gpu().And(PaddleDevice.TensorRt("rec.txt"))
-#elif RELEASE_OPENBLAS || RELEASE_OPENBLAS_NOAVX
-                PaddleDevice.Openblas()
-#endif
-                ) {
-                AllowRotateDetection = true, /* 允许识别有角度的文字 */
-                Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
-            };
-        }
-
-        public void InitOCROpenBlas() {
-            FullOcrModel model = LocalFullModels.ChineseV3;
-            all = new PaddleOcrAll(model, PaddleDevice.Openblas()) {
-                AllowRotateDetection = true, /* 允许识别有角度的文字 */
-                Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
-            };
-        }
-        ~OCRHook() {
-            all.Dispose();
         }
 
 
@@ -95,32 +59,6 @@ namespace SelectAndSearch.Common.Hooks {
             return tSrcBmp;
         }
 
-        static bool IsPointInConvexPolygon(Point[] polygon, Point point) {
-            int n = polygon.Length;
-            if (n < 3)
-                throw new ArgumentException("A convex polygon should have at least 3 vertices.");
-
-            // Check if the point is on the same side of all edges.
-            for (int i = 0; i < n; i++) {
-                int next = (i + 1) % n;
-                double crossProduct = (polygon[next].X - polygon[i].X) * (point.Y - polygon[i].Y) -
-                                      (polygon[next].Y - polygon[i].Y) * (point.X - polygon[i].X);
-
-                if (crossProduct < 0) // Point is on the wrong side of an edge.
-                    return false;
-            }
-
-            return true; // Point is on the same side of all edges.
-        }
-        public PaddleOcrResult GetOcrResult(Bitmap cap) {
-            var stream = new MemoryStream();
-            cap.Save(stream, ImageFormat.Png);
-            stream.Position = 0;
-            using (Mat src = Cv2.ImDecode(stream.ToArray(), ImreadModes.Color)) {
-                PaddleOcrResult result = all.Run(src);
-                return result;
-            }
-        }
         public Point GetActualMousePostion(Point mousePosition) {
             var scale = GetDPIScaling();
             var actualMousePoint = new Point((int)(mousePosition.X * scale), (int)(mousePosition.Y * scale));
@@ -128,34 +66,16 @@ namespace SelectAndSearch.Common.Hooks {
         }
         public void Update() {
             var cap = GetScreenCapture();
-            OcrResult = GetOcrResult(cap);
-        }
-        public (Point, string) GetScreenText() {
-            var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
-            if (OcrResult is null) {
-                return (screenPoint, string.Empty);
-            }
-            var actualMousePoint = GetActualMousePostion(screenPoint);
-            var result = OcrResult;
-            foreach (PaddleOcrResultRegion region in result.Regions) {
-                var points = region.Rect.Points().Select(e => {
-                    return new Point((int)e.X, (int)e.Y);
-                }).ToArray();
-
-                if (IsPointInConvexPolygon(points, actualMousePoint)) {
-                    Console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
-                    return (screenPoint, region.Text);
-                }
-
-            }
-            return (screenPoint, string.Empty);
+            OCR.GetOcrResult(cap);
         }
         public void Execute() {
-            var text = GetScreenText();
-            SearchOption.SearchText = text.Item2;
+            var screenPoint = Control.MousePosition;//鼠标相对于屏幕左上角的坐标
+            var actualMousePoint = GetActualMousePostion(screenPoint);
+            var text = OCR.GetScreenText(actualMousePoint);
+            SearchOption.SearchText = text;
             SearchOption.Skip = 0;
             SearchOption.Take = 20;
-            PopupForm.ShowForm(text.Item1);
+            PopupForm.ShowForm(screenPoint);
         }
 
         private bool MatchKeys(Keys expectedKeys, Keys actualKeys) {

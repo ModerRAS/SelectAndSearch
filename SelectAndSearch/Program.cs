@@ -5,6 +5,7 @@ using SelectAndSearch.Common.Hooks;
 using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Managers;
 using SelectAndSearch.Common.Models;
+using SelectAndSearch.Common.OCR.PaddleOCR;
 using SelectAndSearch.Common.Services;
 
 namespace SelectAndSearch {
@@ -31,6 +32,7 @@ namespace SelectAndSearch {
                     service.AddSingleton<MouseHook>();
                     service.AddSingleton<OCRHook>();
                     service.AddSingleton<GlobalConfig>();
+                    service.AddSingleton<IOCR, PaddleOCR>();
                     service.AddSingleton(service);
 #if DEBUG
                     service.AddBlazorWebViewDeveloperTools();
