@@ -97,7 +97,7 @@ jobs:
           $xmldata.Save($content)
           echo $env:BUILD_VERSION
           msbuild SelectAndSearch /t:DoPublish /p:Configuration=Release /p:PublishProfile=ClickOnceProfile
-          Copy-Item "SelectAndSearch/bin/Release/net7.0/win-x64/app.publish/Publish.html" "SelectAndSearch/bin/SelectAndSearch/"
+          Copy-Item "SelectAndSearch/bin/Release/net6.0-windows/win-x64/app.publish/Publish.html" "SelectAndSearch/bin/SelectAndSearch/"
     - name: Upload to ClickOnce Server
       shell: pwsh
       env:
