@@ -19,6 +19,15 @@ using Util.Reflection.Expressions;
 
 namespace SelectAndSearch.Common.Managers {
     public class LuceneManager {
+        public string WorkDir { get; set; }
+        public string IndexDir { get; set; }
+        public LuceneManager() {
+            if (!System.IO.Directory.Exists(WorkDir)) {
+                System.IO.Directory.CreateDirectory(WorkDir);
+            }
+            WorkDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SelectAndSearch");
+            IndexDir = Path.Combine(WorkDir, "Index_Data");
+        }
         public bool GenerateDocument(Question question, out Document doc) {
             doc = new Document();
             if (string.IsNullOrWhiteSpace(question.Title)) {
@@ -81,7 +90,7 @@ namespace SelectAndSearch.Common.Managers {
 
         }
         private IndexWriter GetIndexWriter() {
-            var dir = FSDirectory.Open("Index_Data/");
+            var dir = FSDirectory.Open(IndexDir);
             Analyzer analyzer = new SmartChineseAnalyzer(LuceneVersion.LUCENE_48);
             var indexConfig = new IndexWriterConfig(LuceneVersion.LUCENE_48, analyzer);
             IndexWriter writer = new IndexWriter(dir, indexConfig);
@@ -112,7 +121,7 @@ namespace SelectAndSearch.Common.Managers {
             var items = q.SkipWhile(x => float.TryParse(x, out var num));
             var keyWordQuery = new BooleanQuery();
             foreach (var item in items) {
-                keyWordQuery.Add(new TermQuery(new Term("IndexedTest", item)), Occur.SHOULD);
+                keyWordQuery.Add(new TermQuery(new Term("IndexedText", item)), Occur.SHOULD);
             }
             var top = searcher.Search(keyWordQuery, Skip + Take);
             var total = top.TotalHits;
@@ -124,7 +133,7 @@ namespace SelectAndSearch.Common.Managers {
             }
         }
         public (int, List<Question>) Search(string q, int Skip, int Take) {
-            IndexReader reader = DirectoryReader.Open(FSDirectory.Open("Index_Data/"));
+            IndexReader reader = DirectoryReader.Open(FSDirectory.Open(IndexDir));
 
             var searcher = new IndexSearcher(reader);
 
