@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0-windows7.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;BenchmarkRelease;Release_mkl;Release_openblas;Release_openblas_noavx;Release_cuda102_cudnn76_tr72_sm61_75;Release_cuda118_cudnn86_tr85_sm86_89</Configurations>

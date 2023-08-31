@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;Release_mkl;Release_openblas;Release_openblas_noavx;Release_cuda102_cudnn76_tr72_sm61_75;Release_cuda118_cudnn86_tr85_sm86_89</Configurations>
+	<UseWindowsForms>true</UseWindowsForms>
+	<Configurations>Debug;Release;Release_mkl;Release_openblas;Release_openblas_noavx;Release_cuda102_cudnn76_tr72_sm61_75;Release_cuda118_cudnn86_tr85_sm86_89</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_mkl|AnyCPU'">
@@ -37,10 +38,11 @@
 	<PackageReference Include="Lucene.Net.Analysis.SmartCn" Version="4.8.0-beta00016" />
 	<PackageReference Include="Lucene.Net.Memory" Version="4.8.0-beta00016" />
 	<PackageReference Include="Masa.Blazor" Version="1.0.1" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="7.0.92" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="6.0.553" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1938.49" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<PackageReference Include="Ninject" Version="3.3.6" />
 	<PackageReference Include="OpenCvSharp4.Extensions" Version="4.8.0.20230708" />

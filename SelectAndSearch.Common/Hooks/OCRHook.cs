@@ -1,26 +1,17 @@
 ﻿using Sdcb.PaddleOCR.Models.Local;
 using Sdcb.PaddleOCR.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
 using OpenCvSharp;
 using Point = System.Drawing.Point;
-using SkiaSharp;
 using System.Drawing.Imaging;
-using System.Drawing;
-using System.Windows.Forms;
 using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Services;
 using SearchOption = SelectAndSearch.Common.Models.SearchOption;
 using SelectAndSearch.Common.Enums;
 using SelectAndSearch.Common.API;
 using SelectAndSearch.Common.Models;
-using static SelectAndSearch.Common.Hooks.ClipboardHook;
 using static SelectAndSearch.Common.Interfaces.IHook;
 using System.Diagnostics;
 
