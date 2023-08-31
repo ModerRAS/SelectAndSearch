@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using SelectAndSearch.Common.Hooks;
 using BenchmarkDotNet.Jobs;
+using SelectAndSearch.Common.OCR.PaddleOCR;
 
 namespace SelectAndSearch.Benchmark {
     [RPlotExporter]
     public class OCRHookBenchmark {
         public OCRHook ocrMkl { get; set; }
         public OCRHookBenchmark() {
-            ocrMkl = new OCRHook(null, null, null);
-            ocrMkl.InitOCR();
+            ocrMkl = new OCRHook(null, null, null, new PaddleOCR());
         }
         [Benchmark]
         public void BenchmarkGetScreenSize() {
@@ -34,8 +34,7 @@ namespace SelectAndSearch.Benchmark {
         }
         [Benchmark]
         public void BenchmarkOCRWithInit() {
-            var ocr2 = new OCRHook(null, null, null);
-            ocr2.InitOCR();
+            var ocr2 = new OCRHook(null, null, null, new PaddleOCR());
             ocr2.Update();
             //ocr2.GetScreenText();
         }
