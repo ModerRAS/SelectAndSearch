@@ -22,11 +22,11 @@ namespace SelectAndSearch.Common.Managers {
         public string WorkDir { get; set; }
         public string IndexDir { get; set; }
         public LuceneManager() {
+            WorkDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SelectAndSearch");
+            IndexDir = Path.Combine(WorkDir, "Index_Data");
             if (!System.IO.Directory.Exists(WorkDir)) {
                 System.IO.Directory.CreateDirectory(WorkDir);
             }
-            WorkDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SelectAndSearch");
-            IndexDir = Path.Combine(WorkDir, "Index_Data");
         }
         public bool GenerateDocument(Question question, out Document doc) {
             doc = new Document();
