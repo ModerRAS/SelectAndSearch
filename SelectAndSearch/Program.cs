@@ -1,17 +1,19 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SelectAndSearch.Common.API;
 using SelectAndSearch.Common.Hooks;
 using SelectAndSearch.Common.Interfaces;
 using SelectAndSearch.Common.Managers;
 using SelectAndSearch.Common.Models;
 using SelectAndSearch.Common.OCR.PaddleOCR;
+using SelectAndSearch.Common.OCR.RapidOCR;
 using SelectAndSearch.Common.Services;
 
 namespace SelectAndSearch {
     internal static class Program {
         public static IHost host { get; private set; }
-        
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -32,7 +34,11 @@ namespace SelectAndSearch {
                     service.AddSingleton<MouseHook>();
                     service.AddSingleton<OCRHook>();
                     service.AddSingleton<GlobalConfig>();
-                    service.AddSingleton<IOCR, PaddleOCR>();
+                    if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1) {
+                        service.AddSingleton<IOCR, RapidOCR>();
+                    } else {
+                        service.AddSingleton<IOCR, PaddleOCR>();
+                    }
                     service.AddSingleton(service);
 #if DEBUG
                     service.AddBlazorWebViewDeveloperTools();

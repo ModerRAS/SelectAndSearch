@@ -48,6 +48,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SelectAndSearch.Common.OCR.PaddleOCR\SelectAndSearch.Common.OCR.PaddleOCR.csproj" />
+	  <ProjectReference Include="..\SelectAndSearch.Common.OCR.RapidOCR\SelectAndSearch.Common.OCR.RapidOCR.csproj" />
 	  <ProjectReference Include="..\SelectAndSearch.Common\SelectAndSearch.Common.csproj" />
 	</ItemGroup>
 

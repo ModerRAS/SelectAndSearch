@@ -1,0 +1,3 @@
+[submodule "SelectAndSearch.Common.OCR.RapidOCR/RapidOCR-json"]
+	path = SelectAndSearch.Common.OCR.RapidOCR/RapidOCR-json
+	url = https://github.com/ModerRAS/RapidOCR-json.git
