@@ -11,15 +11,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration:
-        - Release
-        - Release_mkl
-        - Release_openblas
-        - Release_openblas_noavx
-        - Release_cuda102_cudnn76_tr72_sm61_75
-        - Release_cuda118_cudnn86_tr85_sm86_89
     runs-on: windows-latest
 
     steps:
@@ -37,20 +28,14 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish ./SelectAndSearch/SelectAndSearch.csproj -c ${{ matrix.configuration }} -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish --self-contained true
+      run: dotnet publish ./SelectAndSearch/SelectAndSearch.csproj -c Release -o SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish --self-contained true
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: SelectAndSearch_${{ matrix.configuration }}
+        name: SelectAndSearch_Release
         path: SelectAndSearch\bin\Release\net7.0-windows\win-x64\publish
   benchmark:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        configuration:
-        - Release_mkl
-        - Release_openblas
-        - Release_openblas_noavx
 
     steps:
     - uses: actions/checkout@v3
@@ -62,8 +47,8 @@ jobs:
             6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Benchmark ${{ matrix.configuration }}
-      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c ${{ matrix.configuration }}
+    - name: Benchmark Release
+      run: dotnet run --project .\SelectAndSearch.Benchmark\SelectAndSearch.Benchmark.csproj -c Release
   BuildClickOnce:
     runs-on: windows-latest
 
